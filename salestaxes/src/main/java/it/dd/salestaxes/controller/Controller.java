@@ -20,13 +20,13 @@ public class Controller {
     ReceiptBuilderService receiptBuilder;
     
     @PostMapping("/")
-    public String index(@RequestBody PurchaseList purchaseList) {
+    public Receipt index(@RequestBody PurchaseList purchaseList) {
 
     	logger.info("received purchase list: {}", purchaseList);
     	Receipt receipt = receiptBuilder.buildReceipt(purchaseList);
     	
     	logger.info("return receipt: {}", receipt);
-        return receipt.toString();
+        return receipt;
     }
 
 }

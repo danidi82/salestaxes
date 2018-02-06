@@ -15,6 +15,7 @@ public class AppConfig {
 	@Bean
 	public TaxProperties readJsonWithObjectMapper() throws IOException {
 		TaxProperties props = new TaxProperties();
+		
 		Set<String> exempted = new HashSet<String>();
 		exempted.add("book");
 		exempted.add("chocolate");
@@ -24,13 +25,11 @@ public class AppConfig {
 		
 		Set<String> imported = new HashSet<String>();
 		imported.add("imported");
-		props.setImportedPatterns(imported);
 		
+		props.setImportedPatterns(imported);
 		props.setBasicTaxRate(10);
 		props.setImportedTaxRate(5);
-		return props;
-		// return new ObjectMapper().readValue(new
-		// ClassPathResource("sales.json").getFile(), Sales.class);
 
+		return props;
 	}
 }
