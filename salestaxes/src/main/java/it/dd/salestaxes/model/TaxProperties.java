@@ -7,7 +7,7 @@ public class TaxProperties extends BaseBean {
 	
 	private Set<String> exemptedPatterns;
 
-	private Set<String> importedPatterns;
+	private String importedPattern;
 	
 	private int basicTaxRate;
 	
@@ -23,12 +23,12 @@ public class TaxProperties extends BaseBean {
 		this.exemptedPatterns = exemptedPatterns;
 	}
 
-	public Set<String> getImportedPatterns() {
-		return importedPatterns;
+	public String getImportedPattern() {
+		return importedPattern;
 	}
 
-	public void setImportedPatterns(Set<String> importedPatterns) {
-		this.importedPatterns = importedPatterns;
+	public void setImportedPattern(String importedPattern) {
+		this.importedPattern = importedPattern;
 	}
 
 	public int getBasicTaxRate() {

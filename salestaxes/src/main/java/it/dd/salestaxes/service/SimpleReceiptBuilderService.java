@@ -1,8 +1,5 @@
 package it.dd.salestaxes.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
@@ -49,7 +46,12 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 				logger.debug("not exempted, tax amount: {}", taxOfItem);
 			}
 
-			if (hasMatching(name, taxProperties.getImportedPatterns())) {
+			if (name.contains(taxProperties.getImportedPattern())) {
+				
+				//normalizing imported word position
+				name = name.replace(taxProperties.getImportedPattern()+" ", "") 
+							.replaceFirst(" ", " "+taxProperties.getImportedPattern()+" ");
+				
 				float importTax = ((priceFreeTax * taxProperties.getImportedTaxRate()) / 100);
 				taxOfItem += roundTax(importTax);
 				logger.debug("is imported, tax amount: {}", taxOfItem);

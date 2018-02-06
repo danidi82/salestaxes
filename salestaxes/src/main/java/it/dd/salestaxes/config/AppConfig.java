@@ -23,10 +23,7 @@ public class AppConfig {
 		exempted.add("headache pills");
 		props.setExemptedPatterns(exempted);
 		
-		Set<String> imported = new HashSet<String>();
-		imported.add("imported");
-		
-		props.setImportedPatterns(imported);
+		props.setImportedPattern("imported");
 		props.setBasicTaxRate(10);
 		props.setImportedTaxRate(5);
 
