@@ -1,5 +1,6 @@
 package it.dd.salestaxes.service;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -25,9 +26,6 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 	@Override
 	public Receipt buildReceipt(PurchaseList purchaseList) {
 
-		DecimalFormat df = new DecimalFormat("#.##");
-		df.setRoundingMode(RoundingMode.HALF_UP);
-
 		Receipt receipt = new Receipt();
 		receipt.setItems(new LinkedList<String>());
 
@@ -42,19 +40,25 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 			String name = item.substring(0, item.lastIndexOf(" ", lastSpace - 1));
 			logger.debug("{} tax free costs: {}", name, priceFreeTax);
 
-			float taxOfItem = 0f;
+			float taxOfItem = 0;
 
 			if (!hasMatching(name, taxProperties.getExemptedPatterns())) {
-				taxOfItem = (priceFreeTax * (taxProperties.getBasicTaxRate() / 100));
+				taxOfItem = ((priceFreeTax * taxProperties.getBasicTaxRate()) / 100);
 				logger.debug("not exempted, tax amount: {}", taxOfItem);
 			}
 
 			if (hasMatching(name, taxProperties.getImportedPatterns())) {
-				taxOfItem += (priceFreeTax * (taxProperties.getImportedTaxRate() / 100));
+				taxOfItem += ((priceFreeTax * taxProperties.getImportedTaxRate()) / 100);
 				logger.debug("is imported, tax amount: {}", taxOfItem);
 			}
 
-			float priceTaxed = Float.parseFloat(df.format(taxOfItem)) + priceFreeTax;
+			taxOfItem = (float)(
+					((int) (taxOfItem*100)/5)*5 + 
+					(((int)(taxOfItem*100)%5>0)?5:0)
+					)/100;
+
+			
+		    float priceTaxed =  (float) (taxOfItem + priceFreeTax);
 			logger.debug("{} with tax costs: {}", name, priceTaxed);
 			receipt.getItems().add(name + " : " + priceTaxed);
 
