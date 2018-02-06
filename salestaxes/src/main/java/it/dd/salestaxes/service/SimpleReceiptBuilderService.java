@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -58,15 +59,15 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 			
 		    float priceTaxed =  (float) (taxOfItem + priceFreeTax);
 			logger.debug("{} with tax costs: {}", name, priceTaxed);
-			receipt.getItems().add(name + " : " + priceTaxed);
+			receipt.getItems().add(name + ": " + String.format(Locale.US, "%.2f", priceTaxed));
 
 			taxTotalAmount += taxOfItem;
 			priceTotalAmount += priceTaxed;
 
 		}
 		
-		receipt.setSalesTaxes(Float.toString(taxTotalAmount));
-		receipt.setTotal(Float.toString(priceTotalAmount));
+		receipt.setSalesTaxes(String.format(Locale.US, "%.2f", taxTotalAmount));
+		receipt.setTotal(String.format(Locale.US, "%.2f", priceTotalAmount));
 		
 		return receipt;
 	}

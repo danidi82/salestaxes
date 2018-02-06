@@ -53,10 +53,10 @@ public class ParameterizedTest {
 
 		Receipt output1 = new Receipt();
 		output1.setItems(new LinkedList<String>());
-		output1.getItems().add("1 book : 12.49");
-		output1.getItems().add("1 music CD : 16.49");
-		output1.getItems().add("1 chocolate bar : 0.85");
-		output1.setSalesTaxes("1.5");
+		output1.getItems().add("1 book: 12.49");
+		output1.getItems().add("1 music CD: 16.49");
+		output1.getItems().add("1 chocolate bar: 0.85");
+		output1.setSalesTaxes("1.50");
 		output1.setTotal("29.83");
 
 		PurchaseList input2 = new PurchaseList();
