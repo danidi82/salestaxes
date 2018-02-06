@@ -43,19 +43,17 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 			float taxOfItem = 0;
 
 			if (!hasMatching(name, taxProperties.getExemptedPatterns())) {
-				taxOfItem = ((priceFreeTax * taxProperties.getBasicTaxRate()) / 100);
+				float basicTax = ((priceFreeTax * taxProperties.getBasicTaxRate()) / 100);
+				taxOfItem += roundTax(basicTax);
 				logger.debug("not exempted, tax amount: {}", taxOfItem);
 			}
 
 			if (hasMatching(name, taxProperties.getImportedPatterns())) {
-				taxOfItem += ((priceFreeTax * taxProperties.getImportedTaxRate()) / 100);
+				float importTax = ((priceFreeTax * taxProperties.getImportedTaxRate()) / 100);
+				taxOfItem += roundTax(importTax);
 				logger.debug("is imported, tax amount: {}", taxOfItem);
 			}
-
-			taxOfItem = (float)(
-					((int) (taxOfItem*100)/5)*5 + 
-					(((int)(taxOfItem*100)%5>0)?5:0)
-					)/100;
+			taxOfItem = roundTax(taxOfItem);
 
 			
 		    float priceTaxed =  (float) (taxOfItem + priceFreeTax);
@@ -71,6 +69,12 @@ public class SimpleReceiptBuilderService implements ReceiptBuilderService {
 		receipt.setTotal(Float.toString(priceTotalAmount));
 		
 		return receipt;
+	}
+
+	private float roundTax(float taxOfItem) {
+		float taxTruncatedPart = ((int) (taxOfItem*100)/5)*5;
+		float taxRoundedPart = ((int)((taxOfItem*100)%5)>0)?5:0;
+		return (float)(taxTruncatedPart + taxRoundedPart)/100;
 	}
 
 	private boolean hasMatching(String item, Set<String> set) {
